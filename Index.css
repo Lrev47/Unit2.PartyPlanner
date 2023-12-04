@@ -1,4 +1,27 @@
 body{
-    background-color: brown;
+    background-color: rgb(38, 9, 9);
+color: bisque;
+}
+h1{
+    display: flex;
+    justify-content: center;
+}
+form{
+    background-color: rgba(1, 1, 1, 0.4);
+    padding: 2%;
+}
+
+label{
     
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+}
+#addEventElement{
+    display: flex;
+    justify-content: center;
+}
+#addEvent{
+    padding: 5px 40px;
+    margin-top: 2%;
 }

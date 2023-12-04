@@ -1,13 +1,18 @@
 body{
-    background-color: rgb(38, 9, 9);
+    background-image: url('Assets/brualaha_background_picture_for_a_party._elegant_modern_simplis_c65a905b-d5c3-4245-8cb7-5f79b4df10fb.png');
 color: bisque;
+/* background-position: center; */
+background-size: cover;
+background-repeat: no-repeat;
+background-attachment: fixed;
+
 }
 h1{
     display: flex;
     justify-content: center;
 }
 form{
-    background-color: rgba(1, 1, 1, 0.4);
+    background-color: rgba(1, 1, 1, 0.8);
     padding: 2%;
 }
 
@@ -24,4 +29,15 @@ label{
 #addEvent{
     padding: 5px 40px;
     margin-top: 2%;
+    color: bisque;
+    background-color: rgba(1, 1, 1, 0.4);
+}
+h2{
+    display: flex;
+    justify-content: center;
+}
+.inputBoxes{
+    color: bisque;
+    background-color: rgba(1, 1, 1, 0.1);;
+    margin: 0.5%;
 }

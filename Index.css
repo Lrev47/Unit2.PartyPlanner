@@ -41,3 +41,9 @@ h2{
     background-color: rgba(1, 1, 1, 0.1);;
     margin: 0.5%;
 }
+#eventDisplay{
+    background-color: rgba(1, 1, 1, 0.8);
+}
+li{
+    padding: 20px;
+}

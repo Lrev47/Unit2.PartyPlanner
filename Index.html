@@ -11,19 +11,19 @@
     <h1>Party Planner</h1>
 <form>
     <label> Event Name:  
-        <input class="inputBoxes" size="30" type="text" name="name" />
+        <input id="inputName" class="inputBoxes" size="30" type="text" name="name" />
     </label>
     <label> Event Date: 
-        <input class="inputBoxes" size="30" type="date" name="date" />
+        <input id="inputDate" class="inputBoxes" size="30" type="date" name="date" />
     </label>
     <label> Event Time: 
-        <input class="inputBoxes" size="30" type="time" name="time" />
+        <input id="inputTime" class="inputBoxes" size="30" type="time" name="time" />
     </label>
     <label> Event Location: 
-        <input class="inputBoxes" size="30" type="text" name="location" />
+        <input id="inputLocation" class="inputBoxes" size="30" type="text" name="location" />
     </label>
     <label> Event Description: 
-        <input class="inputBoxes" size="30" type="text" name="description" />
+        <input id="inputDescription" class="inputBoxes" size="30" type="text" name="description" />
     </label>
     <div id="addEventElement">
         <button id="addEvent" >Add Event</button>
@@ -32,5 +32,6 @@
 <h2>
     Party Tracker
 </h2>
+<div id="eventDisplay"></div>
 </body>
 </html>

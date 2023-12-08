@@ -79,7 +79,7 @@ function renderEvents() {
   eventDisplayElement.replaceChildren(...eventCards);
 }
 
-// Delete Event Function
+// Delete Event Function, for some reason you need to press it twice. 
 async function deleteEvent(eventId) {
   const deleteAPI = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/2310-FSA-ET-WEB-PT-SF-B-Luis/events/${eventId}`;
   try {
@@ -108,7 +108,6 @@ async function deleteEvent(eventId) {
 addEventElement.addEventListener("click", async (e) => {
   e.preventDefault(); 
 const newEvent = {
-  id: Math.floor(Math.random() * 100),
   name: inputNameElement.value,
   date : new Date(inputDateElement.value).toISOString(),
   location: inputLocationElement.value,

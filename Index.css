@@ -45,5 +45,16 @@ h2{
     background-color: rgba(1, 1, 1, 0.8);
 }
 li{
-    padding: 20px;
+    padding: 2px;
+    margin: 10px 10px;
+    
+}
+
+button{
+    margin: 18px;
+    background-color: rgba(1, 1, 1, 0.8);
+    color: bisque;
+}
+ul{
+    padding: 10px;
 }

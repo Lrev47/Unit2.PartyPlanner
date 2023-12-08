@@ -1,5 +1,4 @@
-//grabbing input boxes and add event button from DOM
-
+// Grabbing elements from the dom
 const inputNameElement = document.getElementById("inputName");
 const inputDateElement = document.getElementById("inputDate");
 const inputTimeElement = document.getElementById("inputTime");
@@ -8,70 +7,141 @@ const inputDescriptionElement = document.getElementById("inputDescription");
 const addEventElement = document.getElementById("addEvent");
 const eventDisplayElement = document.getElementById("eventDisplay");
 
-//this funtion will take the current value of an input box
-//and retun its value on input.
-function trackInputValue(InputElement){
-let currentInputValue = "";
-InputElement.addEventListener("input", (e) =>{
+// tracking the value function
+function trackInputValue(inputElement) {
+  let currentInputValue = "";
+  inputElement.addEventListener("input", (e) => {
     currentInputValue = e.target.value;
-    console.log("current value:",currentInputValue);
-})};
+    console.log("current value:", currentInputValue);
+  });
+  return currentInputValue;
+}
 
-//Using this function to track the value of all input boxes
-//values will be stored in dynamically updating variables.
+// Input Tracking Variables
 let currentNameValue = trackInputValue(inputNameElement);
 let currentDateValue = trackInputValue(inputDateElement);
 let currentTimeValue = trackInputValue(inputTimeElement);
 let currentLocationValue = trackInputValue(inputLocationElement);
 let currentDescriptionValue = trackInputValue(inputDescriptionElement);
-//saving the API URL in a varible for rapid reusability
-const cohortName = "2310-FSA-ET-WEB-PT-SF-B-Luis/events/";
+
+// API Configuration
+const cohortName = "2310-FSA-ET-WEB-PT-SF-B-Luis/events";
 const API_URL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/${cohortName}`;
-console.log(API_URL)
+console.log(API_URL);
 
-
-//this function will fetch the events data 
-
-const fetchEvents = async () => {
-    try {
-      const response = await fetch(API_URL);
-      let dataNew = await response.json();
-      if (dataNew.success) {
-        return dataNew.data;
-      }
-    } catch (error) {
-      console.error("Error:", error.message);
-      return null;
-    }
-};const fetchDataAndDisplay = async () => {
-    const dataArray = await fetchEvents();
-    if (dataArray) {
-        dataArray.forEach(eventData => {
-            // Creating a list
-            const listItem = document.createElement('ul');
-            listItem.textContent = `Event Name: ${eventData.name}`;
-            
-            // Creating a sublist
-            const sublist = document.createElement('li');
-            sublist.textContent = `Event Date: ${eventData.date}`;
-
-            const locationItem = document.createElement('li');
-            locationItem.textContent = `Event Location: ${eventData.location}`
-
-
-            const descriptionItem = document.createElement('li');
-            descriptionItem.textContent = `Event Description: ${eventData.description}`
-
-            sublist.appendChild(locationItem)
-            sublist.appendChild(descriptionItem)
-            
-            // Append the sublist to the outer list item
-            listItem.appendChild(sublist);
-            
-            // Append the outer list item to the main display element
-            eventDisplayElement.appendChild(listItem);
-        });
-    }
+// State
+const state = {
+  events: [],
 };
 
-fetchDataAndDisplay();
+// Fetch Events Function
+async function getEvents() {
+  try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    state.events = data.data;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+// Render Events Function
+function renderEvents() {
+  console.log(state);
+  if (!state.events.length) {
+    eventDisplayElement.innerHTML = "<li> No Events. </li>";
+    return;
+  }
+
+  const eventCards = state.events.map((event) => {
+    const ul = document.createElement("ul");
+    const button = document.createElement("button");
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      const eventId = event.id;
+      try {
+        deleteEvent(eventId);
+      } catch (error) {
+        console.error("Error", error.message);
+      }
+    });
+
+    button.innerHTML = "Delete Event";
+    ul.innerHTML = `
+      <h2>${event.name}</h2>
+      <ul>${event.date}</ul>
+      <ul>${event.description}</ul>`;
+    ul.appendChild(button);
+
+    return ul;
+  });
+
+  eventDisplayElement.replaceChildren(...eventCards);
+}
+
+// Delete Event Function
+async function deleteEvent(eventId) {
+  const deleteAPI = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/2310-FSA-ET-WEB-PT-SF-B-Luis/events/${eventId}`;
+  try {
+    const response = await fetch(deleteAPI, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    console.log('Event deleted:', data);
+
+    await getEvents();
+    renderEvents();
+  } catch (error) {
+    console.error('Error', error.message);
+  }
+}
+
+// Initial Fetch and Render
+(async () => {
+  await getEvents();
+  renderEvents();
+})();
+
+addEventElement.addEventListener("click", async (e) => {
+  e.preventDefault(); 
+const newEvent = {
+  id: Math.floor(Math.random() * 100),
+  name: inputNameElement.value,
+  date : new Date(inputDateElement.value).toISOString(),
+  location: inputLocationElement.value,
+  description: inputDescriptionElement.value,
+};
+  await addEvent(newEvent);
+
+});
+
+
+async function addEvent(newObj){
+try{
+  console.log(newObj,API_URL)
+  const response = await fetch(API_URL,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newObj),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add event. Status: ${response.status}`);
+  }
+const newObjData = await response.json();
+console.log(newObjData)
+await getEvents();
+  renderEvents();
+
+return newObjData;
+
+} catch (error){
+  console.error('Error:', error.message);
+}
+
+}
